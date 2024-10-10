@@ -47,8 +47,10 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "120x34", "-e", "ranger", NULL };
+//const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+//const char *spcmd2[] = {"st", "-n", "spfm", "-g", "120x34", "-e", "ranger", NULL };
+const char *spcmd1[] = {"alacritty", "-T", "spterm", NULL };
+const char *spcmd2[] = {"alacritty", "-T", "spfm", "-e", "ranger", NULL };
 const char *spcmd3[] = {"keepassxc", NULL };
 const char *spcmd4[] = {"localsend", NULL };
 static Sp scratchpads[] = {
@@ -73,10 +75,12 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",	  NULL,			NULL,		0,			1,			 -1 },
 	{ "Firefox",  NULL,			NULL,		1 << 8,			0,			 -1 },
-	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			 -1 },
-	{ NULL,		  "spfm",		NULL,		SPTAG(1),		1,			 -1 },
-	{ NULL,		  "keepassxc",		NULL,		SPTAG(2),		1,			 -1 },
-	{ NULL,		  "localsend", 		NULL,		SPTAG(3),		1,			 -1 },
+//	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			 -1 },
+//	{ NULL,		  "spfm",		NULL,		SPTAG(1),		1,			 -1 },
+	{ NULL,		  NULL,		    "spterm",	SPTAG(0),		1,			 -1 },
+	{ NULL,		  NULL,		    "spfm",		SPTAG(1),		1,			 -1 },
+	{ NULL,		  "keepassxc",	NULL,		SPTAG(2),		1,			 -1 },
+	{ NULL,		  "localsend", 	NULL,		SPTAG(3),		1,			 -1 },
 };
 
 /* layout(s) */

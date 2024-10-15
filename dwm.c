@@ -66,7 +66,7 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel, SchemeHid }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeHid, SchemeHeal, SchemeWarn, SchemeUrgent0, SchemeUrgent1 }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
@@ -810,6 +810,28 @@ dirtomon(int dir)
 	return m;
 }
 
+int
+VTEXTW(char *text)
+{
+    char *ts = text;
+    char *tp = text;
+    char ctmp;
+    int width = 0;
+    //int i = 0;
+
+    while (1) {
+        if ((unsigned int)*ts > LENGTH(colors)) { ts++; continue; }
+        ctmp = *ts;
+        *ts = '\0';
+        width += TEXTW(tp) - lrpad;
+        if(ctmp == '\0') { break; }
+        *ts = ctmp;
+        tp = ++ts;
+    }
+    width = width + lrpad;
+    return width;
+}
+
 void
 drawbar(Monitor *m)
 {
@@ -817,6 +839,18 @@ drawbar(Monitor *m)
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
+	char *ts = stext;
+	char *tp = stext;
+    char *etsr = estextr;
+    char *etpr = estextr;
+    char *etsl = estextl;
+    char *etpl = estextl;
+	int tx = 0;
+    int etxr = 0;
+    int etxl = 0;
+	char ctmp;
+    char ectmpr;
+    char ectmpl;
 	Client *c;
 
 	if (!m->showbar)
@@ -825,8 +859,19 @@ drawbar(Monitor *m)
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		drw_setscheme(drw, scheme[SchemeNorm]);
-		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
+		tw = VTEXTW(stext) - lrpad + 2; /* 2px right padding */
+		//drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
+		while (1) {
+			if ((unsigned int)*ts > LENGTH(colors)) { ts++; continue ; }
+			ctmp = *ts;
+			*ts = '\0';
+			drw_text(drw, m->ww - tw + tx, 0, tw - tx, bh, 0, tp, 0);
+			tx += TEXTW(tp) - lrpad;
+			if (ctmp == '\0') { break; }
+			drw_setscheme(drw, scheme[(unsigned int)(ctmp-1)]);
+			*ts = ctmp;
+			tp = ++ts;
+		}
 	}
 
 	for (c = m->clients; c; c = c->next) {
@@ -888,10 +933,34 @@ drawbar(Monitor *m)
 		drw_setscheme(drw, scheme[SchemeNorm]);
 		/* clear default bar draw buffer by drawing a blank rectangle */
 		drw_rect(drw, 0, 0, m->ww, bh, 1, 1);
-		etwr = TEXTW(estextr) - lrpad + 2; /* 2px right padding */
-		drw_text(drw, m->ww - etwr, 0, etwr, bh, 0, estextr, 0);
-		etwl = TEXTW(estextl);
-		drw_text(drw, 0, 0, etwl, bh, 0, estextl, 0);
+		etwr = VTEXTW(estextr) - lrpad + 2; /* 2px right padding */
+		//drw_text(drw, m->ww - etwr, 0, etwr, bh, 0, estextr, 0);
+		while (1) {
+			if ((unsigned int)*etsr > LENGTH(colors)) { etsr++; continue ; }
+			ectmpr = *etsr;
+			*etsr = '\0';
+			drw_text(drw, m->ww - etwr + etxr, 0, etwr - etxr, bh, 0, etpr, 0);
+			etxr += TEXTW(etpr) - lrpad;
+			if (ectmpr == '\0') { break; }
+			drw_setscheme(drw, scheme[(unsigned int)(ectmpr-1)]);
+			*etsr = ectmpr;
+			etpr = ++etsr;
+		}
+
+		etwl = VTEXTW(estextl);
+		//drw_text(drw, 0, 0, etwl, bh, 0, estextl, 0);
+		while (1) {
+			if ((unsigned int)*etsl > LENGTH(colors)) { etsl++; continue ; }
+			ectmpl = *etsl;
+			*etsl = '\0';
+			drw_text(drw, etxl, 0, etwl - etxl, bh, 0, etpl, 0);
+			etxl += TEXTW(etpl) - lrpad;
+			if (ectmpl == '\0') { break; }
+			drw_setscheme(drw, scheme[(unsigned int)(ectmpl-1)]);
+			*etsl = ectmpl;
+			etpl = ++etsl;
+		}
+       
 		drw_map(drw, m->extrabarwin, 0, 0, m->ww, bh);
 	}
 }

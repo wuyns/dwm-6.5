@@ -28,19 +28,33 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#ffffff";
 static const char col_cyan[]        = "#37374f";
+static const char col_black[]       = "#000000";
+static const char col_red[]         = "#ff0000";
+static const char col_yellow[]      = "#ffff00";
+static const char col_white[]       = "#ffffff";
+static const char col_green[]       = "#00ff00";
 
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
+	/*               fg字体颜色   bg背景颜色  border边框颜色  */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 	[SchemeHid]  = { col_cyan,  col_gray1, col_cyan  },
+    [SchemeHeal] = { col_green, col_gray1, col_gray2 },
+	[SchemeWarn] = { col_black, col_yellow, col_gray2 },
+	[SchemeUrgent0]= { col_white, col_red, col_gray2 },
+	[SchemeUrgent1]= { col_black, col_red, col_gray2 },
 };
 static const unsigned int alphas[][3]      = {
     /*               fg      bg        border*/
     [SchemeNorm] = { OPAQUE, baralpha, borderalpha },
 	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeHid]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeHeal]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeWarn]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeUrgent0]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeUrgent1]  = { OPAQUE, baralpha, borderalpha },
 };
 
 typedef struct {
@@ -49,16 +63,18 @@ typedef struct {
 } Sp;
 //const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
 //const char *spcmd2[] = {"st", "-n", "spfm", "-g", "120x34", "-e", "ranger", NULL };
-const char *spcmd1[] = {"alacritty", "-T", "spterm", NULL };
-const char *spcmd2[] = {"alacritty", "-T", "spfm", "-e", "ranger", NULL };
-const char *spcmd3[] = {"keepassxc", NULL };
-const char *spcmd4[] = {"localsend", NULL };
+const char *spcmd1[] = { "alacritty", "-T", "spterm", NULL };
+const char *spcmd2[] = { "alacritty", "-T", "spfm", "-e", "ranger", NULL };
+const char *spcmd3[] = { "keepassxc", NULL };
+const char *spcmd4[] = { "localsend", NULL };
+const char *spcmd5[] = { "pavucontrol", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
 	{"spranger",    spcmd2},
 	{"keepassxc",   spcmd3},
-	{"localsend",	spcmd4}
+	{"localsend",	spcmd4},
+    {"pavucontrol", spcmd5}
 };
 
 /* tagging */
@@ -73,7 +89,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",	  NULL,			NULL,		0,			1,			 -1 },
+	{ "Gimp",	  NULL,			NULL,		0,			    1,			 -1 },
 	{ "Firefox",  NULL,			NULL,		1 << 8,			0,			 -1 },
 //	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			 -1 },
 //	{ NULL,		  "spfm",		NULL,		SPTAG(1),		1,			 -1 },
@@ -81,6 +97,7 @@ static const Rule rules[] = {
 	{ NULL,		  NULL,		    "spfm",		SPTAG(1),		1,			 -1 },
 	{ NULL,		  "keepassxc",	NULL,		SPTAG(2),		1,			 -1 },
 	{ NULL,		  "localsend", 	NULL,		SPTAG(3),		1,			 -1 },
+	{ NULL,		  "pavucontrol",NULL,		SPTAG(4),		1,			 -1 }
 };
 
 /* layout(s) */
@@ -148,6 +165,7 @@ static const Key keys[] = {
 	{ MODKEY,            			XK_u,	   togglescratch,  {.ui = 1 } },
 	{ MODKEY,            			XK_x,	   togglescratch,  {.ui = 2 } },
 	{ MODKEY,            			XK_z,	   togglescratch,  {.ui = 3 } },
+	{ MODKEY,            			XK_v,	   togglescratch,  {.ui = 4 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)

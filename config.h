@@ -42,9 +42,10 @@ static const char *colors[][3]      = {
 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 	[SchemeHid]  = { col_cyan,  col_gray1, col_cyan  },
     [SchemeHeal] = { col_green, col_gray1, col_gray2 },
-	[SchemeWarn] = { col_black, col_yellow, col_gray2 },
-	[SchemeUrgent0]= { col_white, col_red, col_gray2 },
-	[SchemeUrgent1]= { col_black, col_red, col_gray2 },
+//	[SchemeWarn] = { col_black, col_yellow, col_gray2 },
+	[SchemeWarn] = { col_black, col_yellow, col_gray2},
+	[SchemeUrgent0]= { col_black, col_red, col_gray2 },
+	[SchemeUrgent1]= { col_red, col_gray1, col_gray2 },
 };
 static const unsigned int alphas[][3]      = {
     /*               fg      bg        border*/

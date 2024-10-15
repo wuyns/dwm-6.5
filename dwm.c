@@ -963,6 +963,15 @@ drawbar(Monitor *m)
        
 		drw_map(drw, m->extrabarwin, 0, 0, m->ww, bh);
 	}
+
+	for (m = mons; m; m = m->next) {
+		if (m != selmon) {
+			drw_setscheme(drw, scheme[SchemeNorm]);
+			/* 清除非选择屏幕的 extrabar */
+			drw_rect(drw, 0, 0, m->ww, bh, 1, 1);
+			drw_map(drw, m->extrabarwin, 0, 0, m->ww, bh);
+		}
+	}
 }
 
 void

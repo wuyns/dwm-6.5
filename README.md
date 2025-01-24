@@ -12,3 +12,4 @@
 - pertag 工作区布局相互独立
 - scratchpads 跨工作区的终端/程序
 - vanitygaps 可定制的间隔
+- leftstack 左侧堆叠

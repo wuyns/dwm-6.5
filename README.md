@@ -1,9 +1,12 @@
-## 我的dwm
+## dwm
+
+### 截图
+![1](screenshots/截图_2025-02-17_23-40-37.png)
 
 ### dwm版本
 - 6.5
 
-### 加入的插件（补丁）
+### 所用补丁
 - alpha 透明效果
 - autostart 自动运行脚本
 - awesomebar
